@@ -1,3 +1,6 @@
+# Local Files
+mariadb-*
+
 # Miscellaneous
 *.java.hsp
 *.sonarj

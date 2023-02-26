@@ -1,0 +1,25 @@
+version: '3'
+services:
+  blogdb:
+    image: mariadb:10.11
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_USER=spring
+      - MYSQL_PASSWORD=spring
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=blogpost
+    restart: always
+    volumes:
+      - ./mariadb-blog:/var/lib/mysql
+
+  blog-service:
+    image: adrsolheim/blog_service:latest
+    pull_policy: always
+    restart: on-failure
+    ports:
+      - 8080:8080
+    environment:
+      DATABASE_HOST: blogdb
+    depends_on:
+      - blogdb

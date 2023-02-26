@@ -1,6 +1,5 @@
 package no.adrsolheim.config;
 
-import org.aspectj.bridge.Message;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

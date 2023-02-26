@@ -38,10 +38,6 @@ public class BlogPostMicroserviceTests {
     static MariaDBContainer mariaDBContainer = new MariaDBContainer("mariadb:10.3");
     @DynamicPropertySource
     static void setMariaDBContainerProperties(DynamicPropertyRegistry dynamicPropertyRegistry) {
-        mariaDBContainer.start();
-        for(int i = 0; i < 100; i++) {
-            System.out.println(mariaDBContainer.getJdbcUrl());
-        }
         dynamicPropertyRegistry.add("spring.datasource.url", mariaDBContainer::getJdbcUrl);
         dynamicPropertyRegistry.add("spring.datasource.username", mariaDBContainer::getUsername);
         dynamicPropertyRegistry.add("spring.datasource.password", mariaDBContainer::getPassword);
