@@ -16,6 +16,6 @@ COPY --from=builder jarlayers/spring-boot-loader/ ./
 COPY --from=builder jarlayers/snapshot-dependencies/ ./
 # source code changes
 COPY --from=builder jarlayers/application/ ./
-EXPOSE 8080
+EXPOSE 8081
 
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
