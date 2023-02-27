@@ -14,12 +14,23 @@ services:
       - ./mariadb-blog:/var/lib/mysql
 
   blog-service:
+    container_name: blog-service
     image: adrsolheim/blog_service:latest
     pull_policy: always
     restart: on-failure
     ports:
-      - 8080:8080
+      - 8081:8081
     environment:
       DATABASE_HOST: blogdb
     depends_on:
       - blogdb
+
+  api-gateway:
+    image: adrsolheim/api_gateway:latest
+    pull_policy: always
+    restart: on-failure
+    ports:
+      - 8080:8080
+    depends_on:
+      - blogdb
+      - blog-service
