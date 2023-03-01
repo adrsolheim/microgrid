@@ -11,10 +11,13 @@ Customize and tailor the API based on who the client is;
 different clients need different APIs.
 
 ### Auth
+
 Session management become complicated as each service is self-contained and stateless.
 `JWT` will eventually be attached to each request and shared across services. 
 `JWT` are stateless (client validate token without 3rd party) and time bound. 
+
 ---
+
 ## TBA
 
 - `Keycloak`: Identity and access management. Partially implemented.
