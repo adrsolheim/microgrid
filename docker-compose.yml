@@ -50,7 +50,6 @@ services:
     restart: always
     volumes:
       - ./mariadb-blog:/var/lib/mysql
-
   blog-service:
     container_name: blog-service
     image: blog_service:latest
@@ -64,6 +63,33 @@ services:
     depends_on:
       - blogdb
 
+  commentdb:
+    image: mariadb:10.11
+    ports:
+      - 3308:3308
+    environment:
+      MYSQL_USER: spring
+      MYSQL_PASSWORD: spring
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: comment
+      MYSQL_TCP_PORT: 3308
+    restart: always
+    volumes:
+      - ./mariadb-comment:/var/lib/mysql
+  comment-service:
+    container_name: comment-service
+    image: comment_service:latest
+    build: ./comment-service
+    #pull_policy: always
+    restart: on-failure
+    ports:
+      - 8083:8083
+    environment:
+      DATABASE_HOST: commentdb
+      DATABASE_PORT: 3308
+    depends_on:
+      - commentdb
+
   api-gateway:
     image: api_gateway:latest
     build: api-gateway
@@ -73,8 +99,11 @@ services:
       - 8080:8080
     environment:
       BLOG_SERVICE_URL: http://blog-service:8081
+      COMMENT_SERVICE_URL: http://comment-service:8083
       KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
       KEYCLOAK_ISSUER_URI: http://keycloak:8082
     depends_on:
+      - commentdb
       - blogdb
+      - comment-service
       - blog-service
