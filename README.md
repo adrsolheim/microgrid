@@ -16,6 +16,14 @@ Session management become complicated as each service is self-contained and stat
 `JWT` will eventually be attached to each request and shared across services. 
 `JWT` are stateless (client validate token without 3rd party) and time bound. 
 
+To keep the `iss` part of the `JWT` consistent, the docker name of keycloak has to be a
+valid hostname that points to the running keycloak instance.
+Additionally, *Frontend URL* of keycloak container needs to be set in keycloak: `http://keycloak:8082`
+Add the following line to `/etc/hosts`
+```
+127.0.0.1 keycloak
+```
+
 ---
 
 ## TBA
@@ -26,6 +34,10 @@ Session management become complicated as each service is self-contained and stat
 ---
 
 ### Run application
+Run keycloak and fetch the client secret. 
+Put the secret (`KEYCLOAK_CLIENT_SECRET=`) in `/.env` 
+where docker-compose will be able to load it as an environment variable.
+
 #### Maven
 ```bash
 docker run -p 8082:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin \
