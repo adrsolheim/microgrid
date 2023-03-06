@@ -37,12 +37,14 @@ public class BlogPostService {
 
     private BlogPost mapToBlog(BlogPostDTO dto){
         return BlogPost.builder()
+                .id(dto.getId())
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .build();
     }
     private BlogPostDTO mapToBlogDTO(BlogPost blog){
         return BlogPostDTO.builder()
+                .id(blog.getId())
                 .title(blog.getTitle())
                 .content(blog.getContent())
                 .build();
