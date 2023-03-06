@@ -3,17 +3,23 @@
 An application implemented as a collection of microservices communicating together
  in a manner which encourage low coupling and high cohesion.
 
+![](images/arch.png)
 
 ### Gateway
 An unified entrypoint/interface for the microservice system. 
 This gateway will also communicate with the auth service (keycloak).
+The keycloak endpoint provide the necessary public keys to the gateway to be able to
+verify `JWT` tokens and not pass on malformed `JWT`s to the internal system.
 Customize and tailor the API based on who the client is; 
 different clients need different APIs.
 
 ### Auth
 
+>*Secrets are checked in to version control for ease of development. 
+All secrets must be excluded from version control for any production environment*
+
 Session management become complicated as each service is self-contained and stateless.
-`JWT` will eventually be attached to each request and shared across services. 
+`JWT` is attached to each request and shared across services. 
 `JWT` are stateless (client validate token without 3rd party) and time bound. 
 
 To keep the `iss` part of the `JWT` consistent, the docker name of keycloak has to be a
@@ -26,10 +32,15 @@ Add the following line to `/etc/hosts`
 
 ---
 
-## TBA
+## Improvements
 
-- `Keycloak`: Identity and access management. Partially implemented.
+- `Keycloak`: Partially implemented. Authentication is required to talk to services.
+  - Implement role-based (e.g. `reader`, `author`) user access
 - `CircuitBreaker`: Addressing failures in communication between services (e.g., service down, response dropped)
+- `Apache Kafka`: Distributed event stream. Make the system more robust by notifying services about events 
+and cascading changes on all relevant services
+  - ***scenario***: Comment posted to blog that is removed
+  - ***fix***: CommentService notified about blog post removal.
 
 ---
 
@@ -42,8 +53,13 @@ where docker-compose will be able to load it as an environment variable.
 ```bash
 docker run -p 8082:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin \
   quay.io/keycloak/keycloak:21.0.0 start-dev
-# requires local database instance running
+  
 cd blog-service
+# requires local database
+mvn spring-boot:run
+
+cd comment-service
+# requires local database
 mvn spring-boot:run
 
 cd api-gateway
