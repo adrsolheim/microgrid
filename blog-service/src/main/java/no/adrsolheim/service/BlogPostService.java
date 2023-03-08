@@ -1,11 +1,13 @@
 package no.adrsolheim.service;
 
 import no.adrsolheim.dto.BlogPostDTO;
+import no.adrsolheim.event.BlogEvent;
 import no.adrsolheim.model.BlogPost;
 import no.adrsolheim.repository.BlogPostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,8 @@ public class BlogPostService {
 
     @Autowired
     private BlogPostRepository blogRepository;
+    @Autowired
+    private KafkaTemplate kafkaTemplate;
     private static final Logger logger = LoggerFactory.getLogger(BlogPostService.class);
 
     public boolean addBlog(BlogPostDTO blogPostDTO) {
@@ -26,7 +30,8 @@ public class BlogPostService {
                 return false;
             }
         }
-        blogRepository.save(blogPost);
+        BlogPost added = blogRepository.save(blogPost);
+        kafkaTemplate.send("blogNotification", new BlogEvent(added.getId(), "CREATE"));
         logger.info("Blog with title {} saved to database", blogPost.getTitle());
         return true;
     }
