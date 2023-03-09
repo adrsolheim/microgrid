@@ -49,6 +49,7 @@ services:
       MYSQL_DATABASE: blogpost
     restart: always
     volumes:
+      - ./configs/blogdb/config:/etc/mysql/my.cnf
       - ./mariadb-blog:/var/lib/mysql
   blog-service:
     container_name: blog-service
