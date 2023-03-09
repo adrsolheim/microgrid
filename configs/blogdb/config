@@ -1,6 +1,7 @@
 [mariadb]
 log-bin                         # enable binary logging
 server_id=3000                  # used to uniquely identify the server
-log-basename=blogdb             # used to be independent of hostname changes
-                                # (otherwise name is <datadir>/mysql-bin)
+log-basename=blogdb             # used to be independent of hostname changes (default: <datadir>/mysql-bin)
 binlog-format=ROW               # binary log format
+binlog_row_image=FULL           # all columns in the before and after image are logged
+expire_logs_days=5              # binary logs will be purged after 5 days
