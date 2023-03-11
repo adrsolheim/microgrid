@@ -1,16 +1,17 @@
 { 
 	"name": "blogdb-connector", 
 	"config": { 
-		"connector.class": "io.debezium.connector.mysql.MySqlConnector", 
+		"connector.class": "io.debezium.connector.mysql.MySqlConnector",
+		"topic.prefix": "blogdb.changes",
 		"tasks.max": "1", 
 		"database.hostname": "blogdb", 
 		"database.port": "3306", 
-		"database.user": "spring", 
-		"database.password": "spring", 
+		"database.user": "debezium",
+		"database.password": "debezium",
 		"database.server.id": "3000", 
 		"database.server.name": "blogdb", 
-		"database.whitelist": "blogpost", 
-		"database.history.kafka.bootstrap.servers": "broker:9092", 
-		"database.history.kafka.topic": "dbhistory.blogdb" 
+		"database.whitelist": "blogpost",
+		"database.history.kafka.bootstrap.servers": "broker:29092",
+		"database.history.kafka.topic": "schema-changes.blogdb"
 	}
 }
