@@ -32,6 +32,14 @@ Add the following line to `/etc/hosts`
 
 ---
 
+### Kafka Connect
+Initialize debezium user ***once*** by either commands:
+```
+mysql -u root -p < /initial/create-debezium-user.sql
+
+mysql> source /initial/create-debezium-user.sql
+```
+
 ## Improvements
 
 - `Keycloak`: Partially implemented. Authentication is required to talk to services.
