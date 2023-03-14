@@ -39,7 +39,38 @@ mysql -u root -p < /initial/create-debezium-user.sql
 
 mysql> source /initial/create-debezium-user.sql
 ```
+Submit JSON request to Kafka Connect to start the connector
+```
+curl \
+    -X POST -H "Accept:application/json" -H "Content-Type: application/json" \
+    http://localhost:8084/connectors/ -d @configs/kafka-connect/blogdb-connector.json
+```
+Verify
+```
+curl -H "Accept:application/json" localhost:8084/connectors/
+```
+Output
+```
+["blogdb-connector"]
+```
 
+####Monitoring event message from broker container
+Find specific topic (e.g. schema changes, data changes)
+```
+kafka-topics  --list --bootstrap-server localhost:9092
+```
+Read from topic
+```
+kafka-console-consumer --bootstrap-server localhost:9092 --topic blogdb.changes.blogpost.blog_post --from-beginning
+```
+Directly through docker compose
+```
+docker-compose exec broker kafka-console-consumer \                                                                                                                                                                                                 130 ↵
+    --bootstrap-server broker:9092 \
+    --from-beginning \
+    --property print.key=true \
+    --topic blogdb.changes.blogpost.blog_post
+```
 ## Improvements
 
 - `Keycloak`: Partially implemented. Authentication is required to talk to services.
