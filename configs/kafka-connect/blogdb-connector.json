@@ -1,6 +1,7 @@
 { 
 	"name": "blogdb-connector", 
-	"config": { 
+	"config": {
+		"snapshot.mode": "initial",
 		"connector.class": "io.debezium.connector.mysql.MySqlConnector",
 		"topic.prefix": "blogdb.changes",
 		"tasks.max": "1", 
@@ -11,7 +12,7 @@
 		"database.server.id": "3000", 
 		"database.server.name": "blogdb", 
 		"database.whitelist": "blogpost",
-		"database.history.kafka.bootstrap.servers": "broker:29092",
-		"database.history.kafka.topic": "schema-changes.blogdb"
+		"schema.history.internal.kafka.bootstrap.servers" : "broker:29092",
+        "schema.history.internal.kafka.topic": "schema-changes.blogdb"
 	}
 }
