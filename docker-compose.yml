@@ -103,6 +103,8 @@ services:
       - broker
 
   zookeeper:
+    # TODO: add persistent volumes?
+    # /var/lib/{zookeeper,mzdata}
     image: confluentinc/cp-zookeeper:7.3.0
     hostname: zookeeper
     container_name: zookeeper
@@ -127,6 +129,8 @@ services:
       - 8085:8085
 
   broker:
+    # TODO: add persistent volumes?
+    # /var/lib/kafka
     image: confluentinc/cp-server:7.3.0
     hostname: broker
     container_name: broker
@@ -139,6 +143,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_HOSTNAME: broker
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -170,17 +175,14 @@ services:
       #CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-
+      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/etc/kafka-connect/jars"
       CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
-
-      #CONNECT_REST_ADVERTISED_PORT: target-connect
-      #CONNECT_PRODUCER_COMPRESSION_TYPE: lz4
       CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8085
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8085
-      #CONNECT_INTERNAL_KEY_CONVERTER_SCHEMAS_ENABLE: 'false'
-      #CONNECT_INTERNAL_VALUE_CONVERTER_SCHEMAS_ENABLE: 'false'
     ports:
       - 8084:8083
+    volumes:
+      - ./kafka-connect/jars:/etc/kafka-connect/jars
     depends_on:
       - schema-registry
       - broker
