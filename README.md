@@ -39,11 +39,18 @@ mysql -u root -p < /initial/create-debezium-user.sql
 
 mysql> source /initial/create-debezium-user.sql
 ```
-Submit JSON request to Kafka Connect to start the connector
+Submit JSON request to Kafka Connect to start the source connector
 ```
 curl \
     -X POST -H "Accept:application/json" -H "Content-Type: application/json" \
     http://localhost:8084/connectors/ -d @configs/kafka-connect/blogdb-connector.json
+```
+Same for sink connector
+```
+curl \
+    -X POST -H "Accept:application/json" -H "Content-Type: application/json" \
+    http://localhost:8084/connectors/ -d @configs/kafka-connect/blogdb-connector-sink.json
+
 ```
 Verify
 ```
@@ -54,7 +61,7 @@ Output
 ["blogdb-connector"]
 ```
 
-####Monitoring event message from broker container
+#### Monitoring event message from broker container
 Find specific topic (e.g. schema changes, data changes)
 ```
 kafka-topics  --list --bootstrap-server localhost:9092
