@@ -3,15 +3,21 @@
 	"config": {
 		"snapshot.mode": "initial",
 		"connector.class": "io.debezium.connector.mysql.MySqlConnector",
-		"topic.prefix": "blogdb.changes",
+		"topic.prefix": "changes",
 		"tasks.max": "1", 
 		"database.hostname": "blogdb", 
 		"database.port": "3306", 
 		"database.user": "debezium",
 		"database.password": "debezium",
 		"database.server.id": "3000", 
-		"database.server.name": "blogdb", 
+		"database.server.name": "blogdb",
 		"database.whitelist": "blogpost",
+		"database.include.list": "blogpost",
+		"column.exclude.list": "content,title",
+		"key.converter": "io.confluent.connect.avro.AvroConverter",
+        "value.converter": "io.confluent.connect.avro.AvroConverter",
+        "key.converter.schema.registry.url": "http://schema-registry:8085",
+        "value.converter.schema.registry.url": "http://schema-registry:8085",
 		"schema.history.internal.kafka.bootstrap.servers" : "broker:29092",
         "schema.history.internal.kafka.topic": "schema-changes.blogdb"
 	}
