@@ -33,6 +33,14 @@ Add the following line to `/etc/hosts`
 ---
 
 ### Kafka Connect
+Keep comment service up to date on blogposts as they are posted and deleted. 
+Synchronize through Kafka and Kafka Connect communication
+
+#### Flow of kafka messages
+![](images/kafka.png)
+
+
+#### Setup
 Initialize debezium user ***once*** by either commands:
 ```
 mysql -u root -p < /initial/create-debezium-user.sql
