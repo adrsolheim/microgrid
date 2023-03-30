@@ -1,5 +1,6 @@
 package no.adrsolheim.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,8 @@ import lombok.Data;
 @Data
 public class BlogPostDTO {
     private Long id;
+    @NotBlank
     private String title;
+    @NotBlank
     private String content;
 }
