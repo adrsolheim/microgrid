@@ -1,0 +1,2 @@
+"database.history.kafka.bootstrap.servers": "broker:29092",
+"database.history.kafka.topic": "schema-changes.blogdb",
